@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout}">
+<body>
+	<main layout:fragment="content">
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+				
+					<div class="col-md-8">
+						<div class="card" style="margin-top: 20px">
+							<div class="card-body">
+							<form class="form-horizontal" th:action="@{/dashboard/mangas/save}" method="post" enctype="multipart/form-data" th:object="${manga}">
+								<input type="hidden" th:field="*{MangaID}">
+								<img id="BannerPhoto" class="card-img-top" th:src="@{${manga.BannerPhotoPath}}" style="object-fit: cover; width: 100%; height: 500px;">
+								<div class="custom-file">
+									<input type="hidden" th:field="*{BannerPhoto}">
+								    <input type="file" name="bannerImage" accept="image/*" class="custom-file-input" onchange="document.getElementById('BannerPhoto').src = window.URL.createObjectURL(this.files[0])">
+								    <label class="custom-file-label">Chọn ảnh banner</label>
+								</div>
+								<div class="card-body">
+								  	<div class="row mb-3">
+								  		<div class="col-md-3">
+								  			<img id="DisplayPhoto" class="card-img-top" th:src="@{${manga.DisplayPhotoPath}}" style="object-fit: cover; width: 100%;">
+								  			<div class="custom-file">
+								  				<input type="hidden" th:field="*{DisplayPhoto}">
+											    <input type="file" name="displayImage" accept="image/*" class="custom-file-input" onchange="document.getElementById('DisplayPhoto').src = window.URL.createObjectURL(this.files[0])">
+											    <label class="custom-file-label">Chọn ảnh tiêu đề</label>
+											</div>
+								  		</div>
+								  		<div class="col-md-3">
+								  			 <div class="form-group">
+								  			 	<label class="control-label">Tên tác giả:</label>
+			    								<input type="text" th:field="*{Author}" class="form-control" placeholder="Nhập tên tác giả" required="required">
+								  			</div>
+								  			<div class="form-group">
+								  			 	<label class="control-label">Tên truyện:</label>
+			    								<input type="text" th:field="*{MangaName}" class="form-control" placeholder="Nhập tên tác giả" required="required">
+								  			</div>
+								  			<div class="form-group">
+								  			 	<label class="control-label">Nhóm dịch:</label>
+			     								<select class="form-control select2" th:field="*{TranslatorID}">
+			    									 <option th:each="translator : ${comboBoxHelper.ListOfTranslators()}"
+			    									 		 th:value="${translator.ItemID}"
+			    									 		 th:text="${translator.ItemName}"
+			    									 ></option>
+			    								</select>
+								  			</div>
+								  			<div class="form-group">
+								  			 	<label class="control-label">Thể loại:</label>
+			     								<select class="form-control select2" th:field="*{CategoryID}">
+			     									 <option th:each="category : ${comboBoxHelper.ListOfCategories()}"
+			    									 		 th:value="${category.ItemID}"
+			    									 		 th:text="${category.ItemName}"
+			    									 >Tizun</option>
+			    								</select>
+								  			</div>
+											<div class="form-group">
+											    <div class="form-check">
+											        <input type="checkbox" class="form-check-input" th:checked="*{isCompleted}">
+											        <label class="form-check-label">Hoàn thành</label>
+											    </div>
+											</div>
+								  		</div>
+								   		 <div class="col-md-6">
+								   			<div class="form-group">
+								  			 	<label class="control-label">Mô tả truyện:</label>
+			    								<textarea th:field="*{Description}" class="form-control" rows="8"></textarea>
+								  			</div>
+								  			<div class="form-group">
+								  			 	<label class="control-label">Tags:</label>
+			    								<input type="text" th:field="*{Tags}" class="form-control" placeholder="Ví dụ: Hành động,Phiêu lưu,Kì bí">
+								  			</div>
+								   		</div>
+								   </div>
+									<div class="row">
+										<div class="col-md-9"></div>
+										<div class="col-md-3">
+											<button class="btn btn-primary m-1">Xác nhận</button>
+											<a href="" class="btn btn-danger m-1">Hủy</a>
+										</div>
+									</div>
+								</div>
+							</form>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="card" style="margin-top: 20px">
+							<div class="card-body">
+								<a th:href="@{/dashboard/chapters(mangaId=${manga.MangaID})}" class="btn btn-primary mb-3">Thêm chương mới</a>
+								<button id="enableSortButton" class="btn btn-primary mb-3">Chỉnh sửa thứ tự</button>
+								<button id="save-btn" class="btn btn-primary mb-3" style="display: none">Lưu</button>
+								<table class="card table table-striped">
+									<tbody id="sortable">
+										<tr th:each="chapter : ${chapters}" th:id="${chapter.ChapterID}">
+											<td style="width: 100px;">Chương <span th:text="${chapter.ChapterNumber}"></span></td>
+											<td th:text="${chapter.ChapterName}"></td>
+											<td style="width: 35%">	                    	
+									        	<a th:href="@{/dashboard/chapters(mangaId=${manga.MangaID}, chapterId=${chapter.ChapterID})}" class="btn btn-info btn-sm" style="margin:1px"><i class="fas fa-edit"></i></a>
+			                    				<button class="btn btn-danger btn-sm" style="margin:1px"><i class="fas fa-trash-alt"></i></button>
+			                    				<div class="fa fa-grip-lines" style="margin-left:5px;display: none"></div>
+			                    			</td>
+										</tr>			
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	<script language="javascript" type="text/javascript" th:inline="javascript">
+	jQuery.noConflict();
+	jQuery(document).ready(function($) {
+		$('#sortable').sortable({ disabled: true });
+		
+		 $('#enableSortButton').on('click', function() {
+			 $('.fa-grip-lines').show();
+			 $('#save-btn').show();
+			 $('#enableSortButton').hide();
+			 $('#sortable').sortable({ disabled: false });
+			  $('#sortable').sortable({
+				    update: function(event, ui) {
+				      var updatedList = $(this).sortable('toArray');
+				      $('#sortable span').each(function(index) {
+				        $(this).text((index + 1));
+				      });
+				    }
+				  }).disableSelection();
+		 });
+		 
+		 $('#save-btn').on('click', function() {
+			 $('.fa-grip-lines').hide();
+			 $('#save-btn').hide();
+			 $('#enableSortButton').show();
+			 var updatedList = $('#sortable').sortable('toArray');
+			 console.log(updatedList);
+			 $('#sortable').sortable({ disabled: true });
+			 // Change ChapterNumber in database
+			 $.ajax({
+				 	url: '/dashboard/mangas/chapters/save',
+				    type: 'GET',    
+				    data: {chapterIDs : updatedList},
+				    success: function(response) {
+				    	toastr.success(response.message, response.status);
+				    },
+				    error: function(error) {
+				    	toastr.error('Danh sách đã được lưu thất bại!', 'Thất bại');
+				    }
+				});
+		 });
+
+	});
+	</script>
+	</main>
+</body>
+</html>

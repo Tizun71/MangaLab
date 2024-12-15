@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:layout.title="~{::title}">Default Title</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>Header Section</h1>
+    </header>
+
+    <main layout:fragment="content">
+        <!-- Nội dung động sẽ được chèn ở đây -->
+    </main>
+
+    <footer>
+        <p>Footer Section</p>
+    </footer>
+</body>
+</html>

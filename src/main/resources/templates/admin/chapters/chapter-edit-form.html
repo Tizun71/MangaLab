@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<main layout:fragment="content">
+		<div class="content">
+			<div class="container-fluid mt-4">
+				<div class="card">
+					<div class="card-body">
+						<form th:action="@{/dashboard/chapters/savePhotos}" method="post" enctype="multipart/form-data" th:object="${chapter}">
+						<div class="form-group">
+							<input type="text" name="mangaId" th:field="*{MangaID}">
+							<input type="text" name="chapterId" th:field="*{ChapterID}">
+							<label class="control-label">Tên chương:</label>
+			    			<input type="text" class="form-control" placeholder="Nhập tên chương" th:field="*{ChapterName}" required="required">
+						</div>
+							<input type="submit" class="btn btn-primary" value="Lưu">
+							<a href="" class="btn btn-primary">Quay lại</a>
+							<input id="createPage" name="pagePhotos" class="btn btn-primary" type="file" accept="image/*" onchange="handleCreatePage(this)" multiple="multiple" hidden>
+						</form>
+						
+						<div class="card mt-3">
+							<div class="card-body">
+								<div id="container" class="row">
+									
+									<div class="col-2">
+										<label for="createPage">
+											<div class="d-flex flex-column align-items-center">
+											    <img src="/uploads/icon/plus_photo_frame.png" width="148" height="210">
+											</div>
+										</label>
+									</div>
+									
+									<div class="col-2" th:each="chapterPhoto : ${chapterPhotos}">
+										<div class="d-flex flex-column align-items-center">
+										    <img th:src="${chapterPhoto.getPhotoURL(chapter.MangaID,chapter.ChapterID)}" width="148" height="210" onerror="this.src='https://placehold.co/148x210?text=Image+Not+Found';" >
+										    <span style="font-weight: bold" th:text="${chapterPhoto.PhotoNumber}"></span>
+										</div>
+									</div>			
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function() {
+
+		function handleCreatePage(input){
+			console.log(input.files.length);
+			for (let i = input.files.length - 1; i >= 0; i--){
+				const imageUrl = window.URL.createObjectURL(input.files[i]);
+				const newPage = $(
+						`
+						<div class="col-2">
+							<div class="d-flex flex-column align-items-center">
+							    <img id="pagePhoto${i}" src="" width="148" height="210" onerror="this.src='https://placehold.co/148x210?text=Image+Not+Found';" >
+							    <span style="font-weight: bold"></span>
+							</div>
+						</div>	
+						`
+					)
+					
+				newPage.find('img').attr('src', imageUrl);
+				$("#container").append(newPage);
+			}
+		}
+		 $("#createPage").on("change", function() {
+			handleCreatePage(this);
+	     });
+	});
+	</script>
+	</main>
+</body>
+</html>

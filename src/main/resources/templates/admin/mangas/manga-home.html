@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout}">
+<body>
+	<main layout:fragment="content">
+		<div class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1 class="m-0">Danh sách truyện</h1>
+	          </div><!-- /.col -->
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+	              <li class="breadcrumb-item active">Thống kê</li>
+	            </ol>
+	          </div><!-- /.col -->
+	        </div><!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </div>
+	    
+	  	<div class="content">
+		  	<div class="container-fluid mt-4">
+	        <div class="d-flex justify-content-between">
+	            <a href="">Quay lại</a>
+	            <a th:href="@{/dashboard/mangas/showFormForCreate}" class="btn btn-primary">Thêm Truyện</a>
+	        </div>
+	
+	        <div class="my-3">
+	            <div class="input-group">
+	                <input type="text" class="form-control" placeholder="Nhập tên truyện..." aria-label="Filter tên">
+	                <div class="input-group-append">
+	                    <button class="btn btn-outline-secondary" type="button">Advanced filter</button>
+	                </div>
+	                
+	            </div>
+	        </div>
+	
+	        <table class="table table-bordered table-striped">
+	            <thead>
+	                <tr>
+	                    <th></th>
+	                    <th>Tình trạng</th>
+	                    <th>Ảnh</th>
+	                    <th>Tiêu đề</th>
+	                    <th>Ngày cập nhật</th>
+	                    <th>Danh mục</th>
+	                    <th>Tags</th>
+	                    <th>Cập nhật</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr th:each="manga : ${mangas}">
+	                    <td><input type="checkbox"></td>
+	                    <td th:text="${manga.GetIsCompletedString()}"></td>
+	                    <td><img src="${manga.DisplayPhoto}" alt="" width="50"></td>
+	                    <td th:text="${manga.MangaName}"></td>
+	                    <td th:text="${manga.CreatedDate}"></td>
+	                    <td><span class="badge badge-primary" th:text="${entityNameHelper.GetCategoryNameByID(manga.categoryID)}"></span></td>
+	                    <td th:with="stringArray=${#strings.arraySplit(manga.Tags, ',')}">
+					        <span class="badge badge-primary" th:each="part : ${stringArray}" th:text="${part}" style="margin: 0 2px"></span>
+	                    </td>
+	                    <td>
+	                    	<a class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+	                    	<a th:href="@{/dashboard/mangas/showFormForEdit(mangaId=${manga.MangaID})}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+	                    	<button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+	                    </td>
+	                </tr>
+	                <!-- More rows as needed -->
+	            </tbody>
+	        </table>
+	    	
+			<nav>
+			  <ul class="pagination justify-content-center">
+			    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+			    <li class="page-item"><a class="page-link" href="#">2</a></li>
+			    <li class="page-item"><a class="page-link" href="#">3</a></li>
+			  </ul>
+			</nav>
+	    	</div>
+	  	</div>
+      
+	</main>
+</body>
+</html>

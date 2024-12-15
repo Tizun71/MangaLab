@@ -1,0 +1,40 @@
+<div th:fragment="resultTranslator">
+<form action= "#" th:action="@{/dashboard/translators/save}" th:object="${translator}" method="POST"> 
+	<div class="modal-header">
+		<h5 class="modal-title" id="exampleModalLabel" th:text="${title}"></h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		 </button>
+	</div>
+	
+	 <div class="modal-body">
+		<input type="hidden" th:field="*{TranslatorID}">
+	
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+			<span class="input-group-text" id="basic-addon1">Tên nhóm dịch</span>
+			</div>
+			<input type="text" class="form-control" placeholder="Nhập tên nhóm dịch" th:field="*{TranslatorName}" required="required" >
+		</div>
+				
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+			<span class="input-group-text">Mô tả</span>
+			</div>
+			<textarea class="form-control" aria-label="With textarea" placeholder="Nhập mô tả" th:field="*{Description}"></textarea>
+		</div>
+				
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+			<span class="input-group-text" id="basic-addon1">Email</span>
+			</div>
+			<input type="email" class="form-control" placeholder="Nhập Email" th:field="*{Email}">
+		</div>     	
+	</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+		<input type="submit" class="btn btn-primary" value="Lưu">
+	</div>
+</form>
+</div>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nhóm dịch</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Danh sách nhóm dịch</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="card">
+                <div class="container-fluid mt-4">
+                    <div class="d-flex justify-content-between">
+                        <a th:href="@{/dashboard}"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                         <a class="btn btn-primary" 
+	                    	data-toggle="modal" 
+	                    	data-target="#exampleModal" 
+	                    	data-container="#modal-body-content"
+                    		th:onclick="'openModalCreate(' + '\'#modal-body-content\')'"  >
+                    	Thêm nhóm dịch
+                    	</a>
+                    </div>
+
+                    <form id="formSearch" th:action="@{/dashboard/translators/search}" method="GET" data-container="#searchResult">
+                        <div class="my-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Nhập tên nhóm dịch..." name="searchValue">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+				
+				<div id="searchResult"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content"  id="modal-body-content">
+		      
+		    </div>
+		  </div>
+		</div>
+		</div> 
+    <!-- Paginated script  -->
+	<script th:inline="javascript">
+	$(document).ready(function () {
+	    $("#formSearch").submit(function (e) {
+	        e.preventDefault();
+	        paginationSearch(this, 1);
+	        return;
+	    });
+	    paginationSearch("#formSearch", 1);
+	});
+	
+	function paginationSearch(formSearch, page) {
+	    var action = $(formSearch).prop("action");
+	    var method = $(formSearch).prop("method");
+	    var container = $(formSearch).data("container");
+	    var searchData = $(formSearch).serializeArray();
+	    searchData.push({ "name": "page", "value": page });
+	    
+	    $.ajax({
+	        url: action,
+	        type: method,
+	        data: searchData,
+	        async: true,
+	        error: function () {
+	            alert("Your request is not valid!");
+	        },
+	        success: function (data) {
+	            $(container).html(data);
+	        }
+	    });
+	}
+	</script>
+	
+	<script th:inline="javascript">
+	function openModalCreate(container){
+		$.ajax({
+			url: '/dashboard/translators/showModalForCreate',
+			type: 'GET',
+		    async: true,
+		    error: function () {
+		        alert("Your request is not valid!");
+		    },
+		    success: function (data) {
+		        $(container).html(data);
+		    }
+		})
+	}
+	function openModalUpdate(container, id){
+		$.ajax({
+			url: '/dashboard/translators/showModalForUpdate',
+			type: 'GET',
+			data: { translatorId: id },
+		    async: true,
+		    error: function () {
+		        alert("Your request is not valid!");
+		    },
+		    success: function (data) {
+		        $(container).html(data);
+		    }
+		})
+	}
+	</script>
+    </main>
+</body>
+</html>

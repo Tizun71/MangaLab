@@ -1,0 +1,52 @@
+<div th:fragment="resultList">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên nhóm dịch</th>
+                <th>Mô tả</th>
+                <th>Email</th>
+                <th>Số truyện đã dịch</th>
+                <th>Cập nhật</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="translator, num : ${translators}">
+                <td th:text="${num.index + 1}"></td>
+                <td th:text="${translator.TranslatorName}"></td>
+                <td th:text="${translator.Description}"></td>
+                <td th:text="${translator.Email}"></td>
+                <td></td>
+                <td>
+                    <a 	class="btn btn-warning btn-sm" 
+                    	data-toggle="modal" 
+                    	data-target="#exampleModal" 
+                    	data-container="#modal-body-content"
+                    	th:onclick="'openModalUpdate(' + '\'#modal-body-content\', ' + ${translator.TranslatorID} + ')'"  >
+                    	<i class="fas fa-edit"></i>
+                    </a>
+                    <a 
+                    	class="btn btn-danger btn-sm" 
+                    	th:href="@{/dashboard/translators/delete(translatorId=${translator.TranslatorID})}"
+                    	onclick="if (!(confirm('Bạn có muốn xóa nhóm dịch này không'))) return false"
+                    	>
+                    	<i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+     <nav>
+		<ul class="pagination justify-content-center">
+		    <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}">
+				<a href="javascript:void(0);" 
+				   th:text="${i}" 
+				   th:onclick="'paginationSearch(' + '\'#formSearch\', ' + ${i} + ')'" 
+				   class="page-link"></a>
+		    </li>
+		</ul>
+    </nav>
+</div>
+
+
