@@ -95,18 +95,17 @@
 
             <!-- Carousel Start -->
             <div class="header-carousel owl-carousel">
-                <div class="header-carousel-item">
-                    <img src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/5/panorama/processed-1e5ebe98f8eeba4d0771764fbd376ca2.jpg" class="img-fluid w-100" alt="Image">
+                <div class="header-carousel-item" th:each="manga : ${mangas}">
+                    <img th:src="@{${manga.getBannerPhotoPath()}}" class="img-fluid w-100" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row gy-0 gx-5">
                                 <div class="col-lg-0 col-xl-5"></div>
                                 <div class="col-xl-7 animated fadeInLeft">
                                     <div class="text-sm-center text-md-end">
-                                        <h4 class="text-primary text-uppercase fw-bold mb-4">Naoya Matsumoto</h4>
-                                        <h1 class="display-4 text-uppercase text-white mb-4">Monster #8 (FULL HD)</h1>
-                                        <p class="et mb-5 fs-5">Trong một tương lai xa, thế giới tràn ngập những con quái vật khổng lồ cực kì nguy hiểm gọi là các Kaiju. Trong số các nước, Nhật Bản là quốc gia chịu ảnh hưởng từ các Kaiju nhiều nhất nên họ đã lập nên một lực lượng phòng vệ gồm những người có thể chất vượt trội. Bằng cách sử dụng bộ giáp đặc chế từ cơ của các Kaiju cùng nhiều vũ khí hạng nặng khác, lực lượng phòng vệ chính là bức tường phòng hộ mạnh mẽ nhất của Nhật Bản 
-                                        </p>
+                                        <h4 class="text-primary text-uppercase fw-bold mb-4" th:text="${manga.Author}"></h4>
+                                        <h1 class="display-4 text-uppercase text-white mb-4" th:text="${manga.MangaName}"></h1>
+                                        <p class="et mb-5 fs-5"></p>
                                         <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
                                             <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i>Đọc chương đầu</a>
                                             <a class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem chi tiết</a>
@@ -117,30 +116,6 @@
                         </div>
                     </div>
                 </div>
-                <!--  -->
-                <div class="header-carousel-item">
-                    <img src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/112/panorama/processed-9932cdd18fb0564545023c5b69ef9b7d.jpg" class="img-fluid w-100" alt="Image">
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="row gy-0 gx-5">
-                                <div class="col-lg-0 col-xl-5"></div>
-                                <div class="col-xl-7 animated fadeInLeft">
-                                    <div class="text-sm-center text-md-end">
-                                        <h4 class="text-primary text-uppercase fw-bold mb-4">Naoya Matsumoto</h4>
-                                        <h1 class="display-4 text-uppercase text-white mb-4">Solo Leveling</h1>
-                                        <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy... 
-                                        </p>
-                                        <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
-                                            <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i>Đọc chương đầu</a>
-                                            <a class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem chi tiết</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--  -->
             </div>
             <!-- Carousel End -->
         </div>
