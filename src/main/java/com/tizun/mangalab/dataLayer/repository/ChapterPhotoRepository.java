@@ -19,11 +19,11 @@ public class ChapterPhotoRepository implements IChapterPhotoRepository {
 	}
 
 	@Override
-	public java.util.List<ChapterPhoto> List(long chapterPhotoID) {
+	public java.util.List<ChapterPhoto> List(long chapterID) {
 		// TODO Auto-generated method stub
 		String theQuery = "from ChapterPhoto where ChapterID = :chapterID order by PhotoNumber asc";
 		TypedQuery<ChapterPhoto> qr = _entityManager.createQuery(theQuery, ChapterPhoto.class);
-		qr.setParameter("chapterID", chapterPhotoID);
+		qr.setParameter("chapterID", chapterID);
 		return qr.getResultList();
 	}
 

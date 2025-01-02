@@ -1,5 +1,7 @@
 package com.tizun.mangalab.security;
 
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class securityConfig {
@@ -42,13 +45,14 @@ public class securityConfig {
 					configurer
 							.requestMatchers("/admin/**").permitAll()
 							.requestMatchers("/dashboard/**").hasRole("ADMIN")
+							.requestMatchers("/").permitAll()
 							.anyRequest().authenticated()
 				)
 				.formLogin(form -> 
 						form
 							.loginPage("/showAdminLoginPage")
 							.loginProcessingUrl("/authenticateTheUser")
-							.defaultSuccessUrl("/dashboard", true)
+							.defaultSuccessUrl("/dashboard/")
 							.permitAll()
 						).logout(logout -> logout.permitAll()
 						)

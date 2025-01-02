@@ -996,3 +996,25 @@
     color: #222222;
     margin-top: 20px;
   }
+   .manga-description .content {
+    height: 50px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  
+  .manga-description .content.expanded {
+    height: auto; 
+  }
+  .badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  
+  .badge-primary {
+    background-color: #007bff;
+    color: white;
+  }

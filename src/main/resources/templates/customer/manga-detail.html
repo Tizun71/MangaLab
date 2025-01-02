@@ -95,25 +95,10 @@
 
             <!-- Carousel Start -->
             <div class="header-carousel owl-carousel">
-                <div class="header-carousel-item" th:each="manga : ${mangas}">
+                <div class="header-carousel-item">
                     <img th:src="@{${manga.getBannerPhotoPath()}}" class="img-fluid w-100" alt="Image">
                     <div class="carousel-caption">
-                        <div class="container">
-                            <div class="row gy-0 gx-5">
-                                <div class="col-lg-0 col-xl-5"></div>
-                                <div class="col-xl-7 animated fadeInLeft">
-                                    <div class="text-sm-center text-md-end">
-                                        <h4 class="text-primary text-uppercase fw-bold mb-4" th:text="${manga.Author}"></h4>
-                                        <h1 class="display-4 text-uppercase text-white mb-4" th:text="${manga.MangaName}"></h1>
-                                        <p class="et mb-5 fs-5"></p>
-                                        <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
-                                            <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i>Đọc chương đầu</a>
-                                            <a class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem chi tiết</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -123,110 +108,104 @@
 
 		<!-- Content -->
         <div class="container-fluid about py-5">
-        	<!-- Category Start -->
-            <section class="py-5 overflow-hidden">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-12">
-          
-                      <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-                        <h2 class="section-title">Thể loại</h2>
-          
-                        <div class="d-flex align-items-center">
-                          <div class="swiper-buttons">
-                            <button class="swiper-prev category-swiper-prev category-carousel-prev btn btn-yellow">❮</button>
-                            <button class="swiper-next category-swiper-next category-carousel-next btn btn-yellow">❯</button>
-                          </div>
-                        </div>
-                      </div>
-                      
-                    </div>
+            <div class="container-fluid" style="padding: 10px;background-color: whitesmoke;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                  <div class="col-md-2">
+                    <img th:src="@{${manga.getDisplayPhotoPath()}}" style="width: 224px;height: 336px;border-radius: 16px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 1);">
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-          
-                      <div class="category-carousel swiper">
-                        <div class="swiper-wrapper">
-
-                          <a href="search.html" class="nav-link category-item swiper-slide" th:each="category : ${categories}">
-                            <h3 class="category-title" th:text="${category.CategoryName}"></h3>
-                          </a>
-                          
+                  <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12 py-5">
+                            <h3 th:text="${manga.Author}">Author</h3>
+                            <h1 th:text="${manga.MangaName}">Tên truyện</h1>
+                            <div class="tags" th:with="stringArray=${#strings.arraySplit(manga.Tags, ',')}">
+                              <a href=""><span class="badge badge-primary m-1" th:each="part : ${stringArray}" th:text="${part}" >Hành động</span></a>
+                            </div>
                         </div>
-                      </div>
-          
+
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Theo dõi</a>
+                            <a href="#" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Đọc chương đầu tiên</a>
+                        </div>
                     </div>
+
                   </div>
                 </div>
-            </section>
-            <!-- Category End -->
-            
-            <!-- Feature Manga Start -->
-            <section class="py-5 overflow-hidden">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-12">
-          
-                      <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-                        <h2 class="section-title" style="color: lightcoral;"><i class="fa fa-star"></i>Truyện hay</h2>
-          
-                        <div class="d-flex align-items-center">
-                          <div class="swiper-buttons">
-                            <button class="swiper-prev manga-swiper-prev manga-carousel-prev btn btn-yellow">❮</button>
-                            <button class="swiper-next manga-swiper-next manga-carousel-next btn btn-yellow">❯</button>
-                          </div>
-                        </div>
-                      </div>
-                      
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-          
-                      <div class="manga-carousel swiper">
-                        <div class="swiper-wrapper">
-                            <a href="search.html" class="nav-link manga-item swiper-slide">
-                                <img class="manga-image" src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/1288/cover/processed-5921c6a53454ea2288cc076706b9d3e8.jpg">
-                                <h3 class="manga-title">Monster#8</h3>
-                            </a>
-                        </div>
-                      </div>
-          
-                    </div>
-                  </div>
-                </div>
-            </section>
-            <!-- Feature Manga End -->
-
-            <!-- Manga List Start -->
-            <section class="py-5 overflow-hidden">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-                        <h2 class="section-title">Truyện mới cập nhật</h2>   
-
-                        <div class="d-flex align-items-center">
-                            <a href="">
-                              Xem danh sách truyện
-                            </a>
-                        </div>
-                      </div> 
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6 col-md-2"  th:each="manga : ${mangas}">
-                        <a th:href="@{manga(mangaID=${manga.MangaID})}" class="nav-link manga-item">
-                            <img class="manga-image" th:src="@{${manga.getDisplayPhotoPath()}}" onerror="">
-                            <h3 class="manga-title" th:text="${manga.MangaName}"></h3>
-                            <p style="color: grey;">C.1 - 10 phút trước</p>
-                        </a>
-                    </div>
+                <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md">
+                    
                     
                   </div>
                 </div>
-            </section>
-            <!-- Manga List End -->
+            </div>  
+
+            <div class="container-fluid" style="background-color: whitesmoke;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+              <div class="row">
+                <div class="col-md-9">
+                  <div class="author-content" style="background-color: rgb(220, 220, 220); margin: 10px; border-radius: 4px;">
+                    <div class="container-fluid">
+                      <div class="row" style="padding: 10px;">
+                        <div class="col d-flex align-items-center">
+                          <p class="mb-0 ms-2">Nhóm dịch: Tizun</p>
+
+                        </div>
+                        <div class="col d-flex justify-content-end align-items-end">
+                          <a></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="manga-description" style="display: flex; flex-direction: column; align-items: center;">
+                      <p class="content" style="margin-left: 30px;margin-right: 30px" th:text="${manga.Description}"> 
+						
+                      </p>
+                      <button class="toggle-button" onclick="toggleContent()" style="border: none;background: none; width: 100%; color: gray;">Xem thêm</button>
+                    </div>    
+                  </div>
+                  <!-- List group -->
+                  <div class="list-group" style="overflow-y: scroll; margin-left: 10px; margin-bottom: 100px;">
+                    <div th:each="chapter : ${chapters}">
+                  	<a th:href="@{chapter(chapterID=${chapter.ChapterID})}" class="list-group-item d-flex justify-content-between align-items-center text-decoration-none p-2 mb-1" style="margin: 1; width: 100%;">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-3 col-md-1">
+                            <p style="font-weight: bold;" th:text="${chapter.ChapterNumber}">Chương 1</p>
+                          </div>
+                          <div class="col-6 col-md-8 align-items-center">
+                            <p th:text="${chapter.ChapterName}">Khuyết điểm chỉ là vật trang trí cho ngai vàng</p>
+                          </div>
+                          <div class="col col-md d-flex justify-content-end align-items-center">
+                            <p>1 ngày trước</p>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-3 mt-3">
+                    <p class="row">CÙNG NHÓM DỊCH
+                    <div class="row">
+                        <img class="col-2 col-md-3" src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/2600/cover/processed-97e338e0dcf69632425d68abcaa6d53e.jpg"></img>
+                        <div class="col col-md">
+                            <p class="row" style="font-weight: bold;">Red Blue</p>
+                            <p class="row">C.1 - 10 giờ trước</p>
+                        </div>
+                    </div>         
+                    
+                    <p class="row">ĐỀ XUẤT
+                        <div class="row">
+                        <img class="col-2 col-md-3" src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/2600/cover/processed-97e338e0dcf69632425d68abcaa6d53e.jpg"></img>
+                        <div class="col col-md">
+                            <p class="row" style="font-weight: bold;">Red Blue</p>
+                            <p class="row">C.1 - 10 giờ trước</p>
+                        </div>
+                    </div>              
+                </div>
+              </div>
+            </div>
         </div>
 
         <!-- Footer Start -->

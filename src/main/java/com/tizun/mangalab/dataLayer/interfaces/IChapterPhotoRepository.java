@@ -6,7 +6,7 @@ import com.tizun.mangalab.domainLayer.entity.Chapter;
 import com.tizun.mangalab.domainLayer.entity.ChapterPhoto;
 
 public interface IChapterPhotoRepository {
-	public List<ChapterPhoto> List(long chapterPhotoID);
+	public List<ChapterPhoto> List(long chapterID);
 
 	public ChapterPhoto Get(long id);
 
