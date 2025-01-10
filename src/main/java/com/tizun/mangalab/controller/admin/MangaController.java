@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tizun.mangalab.businessLayer.interfaces.IChapterService;
 import com.tizun.mangalab.businessLayer.interfaces.IMangaService;
 import com.tizun.mangalab.domainLayer.entity.Chapter;
 import com.tizun.mangalab.domainLayer.entity.Manga;
+import com.tizun.mangalab.domainLayer.entity.Translator;
 import com.tizun.mangalab.utils.ComboBoxHelper;
 import com.tizun.mangalab.utils.EntityNameHelper;
 import com.tizun.mangalab.utils.UploadHelper;
@@ -37,17 +39,33 @@ public class MangaController {
 	
 	public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads/mangas_img/";
 	
+	final int PAGE_SIZE = 5;
+	
 	@GetMapping("")
 	public String listMangas(Model model) {
-		List<Manga> mangas = _mangaService.ListOfMangas(1, 10, "");
-		model.addAttribute("entityNameHelper", _entityNameHelper);
-		model.addAttribute("mangas", mangas);
 		return "admin/mangas/manga-home";
+	}
+	
+	@GetMapping("/search")
+	public String searchMangas(
+			@RequestParam(name="page", required = false, defaultValue="1") int page,
+			@RequestParam(name="searchValue", required = false, defaultValue="") String searchValue,
+			Model model
+			) {
+	long rowCount = _mangaService.CountDataRow(searchValue);
+	long pageCount = rowCount % PAGE_SIZE == 0 ? rowCount / PAGE_SIZE : rowCount / PAGE_SIZE + 1;
+	List<Manga> mangas = _mangaService.ListOfMangas(page, PAGE_SIZE, searchValue);
+	model.addAttribute("page", page);
+	model.addAttribute("totalPages", pageCount);
+	model.addAttribute("mangas", mangas);
+	model.addAttribute("entityNameHelper", _entityNameHelper);
+	return "admin/mangas/fragments/manga-search ::resultList";
 	}
 	
 	@GetMapping("/showFormForCreate")
 	public String showCreateForm(Model model) {
 		Manga manga = new Manga();
+		manga.setMangaID(0);
 		model.addAttribute("comboBoxHelper", _comboBoxHelper);
 		model.addAttribute("manga", manga);
 		return "admin/mangas/create-form";
@@ -61,6 +79,17 @@ public class MangaController {
 		List<Chapter> chapters = _chapterService.ListOfChapters(id);
 		model.addAttribute("chapters", chapters);
 		return "admin/mangas/edit-form";
+	}
+	
+	@GetMapping("/delete")
+	public String delete(@RequestParam("mangaId") int id, RedirectAttributes redirectAttributes) {
+		if (_mangaService.InUsed(id)) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Nhóm dịch đang được sử dụng!");
+			return "redirect:/dashboard/mangas";
+		}
+		_mangaService.Delete(id);
+		redirectAttributes.addFlashAttribute("successMessage", "Xóa nhóm dịch thành công!");
+		return "redirect:/dashboard/mangas";
 	}
 	
 	@PostMapping("/save")

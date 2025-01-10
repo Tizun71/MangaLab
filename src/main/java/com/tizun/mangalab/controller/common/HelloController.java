@@ -1,4 +1,4 @@
-package com.tizun.mangalab.controller;
+package com.tizun.mangalab.controller.common;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

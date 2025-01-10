@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.tizun.mangalab.businessLayer.interfaces.ITranslatorService;
 import com.tizun.mangalab.dataLayer.interfaces.ICommonRepository;
+import com.tizun.mangalab.dataLayer.interfaces.ITranslatorRepository;
 import com.tizun.mangalab.domainLayer.entity.Translator;
 
 import jakarta.transaction.Transactional;
@@ -16,7 +17,7 @@ import jakarta.transaction.Transactional;
 public class TranslatorService implements ITranslatorService{
 	
 	@Autowired
-	private ICommonRepository<Translator> translatorRepository;
+	private ITranslatorRepository translatorRepository;
 	
 	@Override
 	public List<Translator> ListOfTranslators(int page, int pageSize, String searchValue) {
@@ -48,5 +49,17 @@ public class TranslatorService implements ITranslatorService{
 	public boolean Delete(int id) {
 		// TODO Auto-generated method stub
 		return translatorRepository.Delete(id);
+	}
+
+	@Override
+	public boolean InUsed(int id) {
+		// TODO Auto-generated method stub
+		return translatorRepository.InUsed(id);
+	}
+
+	@Override
+	public long CountDataRowInMangaTable(int id) {
+		// TODO Auto-generated method stub
+		return translatorRepository.CountNumberManga(id);
 	}
 }

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tizun.mangalab.businessLayer.interfaces.ICategoryService;
+import com.tizun.mangalab.businessLayer.interfaces.IChapterService;
 import com.tizun.mangalab.businessLayer.interfaces.ITranslatorService;
 import com.tizun.mangalab.domainLayer.entity.Category;
+import com.tizun.mangalab.domainLayer.entity.Chapter;
 import com.tizun.mangalab.domainLayer.entity.Translator;
 
 @Component
@@ -17,6 +19,8 @@ public class ComboBoxHelper {
 	private ITranslatorService _translatorService;
 	@Autowired
 	private ICategoryService _categoryService;
+	@Autowired
+	private IChapterService _chapterService;
 	
 	public List<ComboBoxItem> ListOfTranslators(){
 		List<ComboBoxItem> list = new ArrayList<>();
@@ -34,6 +38,15 @@ public class ComboBoxHelper {
 		List<Category> categories = _categoryService.ListOfCategories(0, 0, null);
 		for (Category category : categories) {
 			list.add(new ComboBoxItem(category.getCategoryID(), category.getCategoryName()));
+		}
+		return list;
+	}
+	
+	public List<ComboBoxChapterItem> ListOfChapters(long mangaID){
+		List<ComboBoxChapterItem> list = new ArrayList<>();
+		List<Chapter> chapters = _chapterService.ListOfChapters(mangaID);
+		for (Chapter chapter : chapters) {
+			list.add(new ComboBoxChapterItem(chapter.getChapterID(), chapter.getChapterNumber()));
 		}
 		return list;
 	}

@@ -140,7 +140,7 @@
 			 $('#sortable').sortable({ disabled: true });
 			 // Change ChapterNumber in database
 			 $.ajax({
-				 	url: '/dashboard/mangas/chapters/save',
+				 	url: '/dashboard/chapters/save',
 				    type: 'GET',    
 				    data: {chapterIDs : updatedList},
 				    success: function(response) {

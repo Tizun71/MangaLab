@@ -25,60 +25,53 @@
 	            <a th:href="@{/dashboard/mangas/showFormForCreate}" class="btn btn-primary">Thêm Truyện</a>
 	        </div>
 	
-	        <div class="my-3">
-	            <div class="input-group">
-	                <input type="text" class="form-control" placeholder="Nhập tên truyện..." aria-label="Filter tên">
-	                <div class="input-group-append">
-	                    <button class="btn btn-outline-secondary" type="button">Advanced filter</button>
-	                </div>
-	                
-	            </div>
-	        </div>
+	        <form id="formSearch" th:action="@{/dashboard/mangas/search}" method="GET" data-container="#searchResult">
+                        <div class="my-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Nhập tên truyện..." name="searchValue">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
 	
-	        <table class="table table-bordered table-striped">
-	            <thead>
-	                <tr>
-	                    <th></th>
-	                    <th>Tình trạng</th>
-	                    <th>Ảnh</th>
-	                    <th>Tiêu đề</th>
-	                    <th>Ngày cập nhật</th>
-	                    <th>Danh mục</th>
-	                    <th>Tags</th>
-	                    <th>Cập nhật</th>
-	                </tr>
-	            </thead>
-	            <tbody>
-	                <tr th:each="manga : ${mangas}">
-	                    <td><input type="checkbox"></td>
-	                    <td th:text="${manga.GetIsCompletedString()}"></td>
-	                    <td><img src="${manga.DisplayPhoto}" alt="" width="50"></td>
-	                    <td th:text="${manga.MangaName}"></td>
-	                    <td th:text="${manga.CreatedDate}"></td>
-	                    <td><span class="badge badge-primary" th:text="${entityNameHelper.GetCategoryNameByID(manga.categoryID)}"></span></td>
-	                    <td th:with="stringArray=${#strings.arraySplit(manga.Tags, ',')}">
-					        <span class="badge badge-primary" th:each="part : ${stringArray}" th:text="${part}" style="margin: 0 2px"></span>
-	                    </td>
-	                    <td>
-	                    	<a class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-	                    	<a th:href="@{/dashboard/mangas/showFormForEdit(mangaId=${manga.MangaID})}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
-	                    	<button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-	                    </td>
-	                </tr>
-	                <!-- More rows as needed -->
-	            </tbody>
-	        </table>
+	        <div id="searchResult"></div>
 	    	
-			<nav>
-			  <ul class="pagination justify-content-center">
-			    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			  </ul>
-			</nav>
 	    	</div>
 	  	</div>
-      
+      <!-- Paginated script  -->
+	<script th:inline="javascript">
+	$(document).ready(function () {
+	    $("#formSearch").submit(function (e) {
+	        e.preventDefault();
+	        paginationSearch(this, 1);
+	        return;
+	    });
+	    paginationSearch("#formSearch", 1);
+	});
+	
+	function paginationSearch(formSearch, page) {
+	    var action = $(formSearch).prop("action");
+	    var method = $(formSearch).prop("method");
+	    var container = $(formSearch).data("container");
+	    var searchData = $(formSearch).serializeArray();
+	    searchData.push({ "name": "page", "value": page });
+	    
+	    $.ajax({
+	        url: action,
+	        type: method,
+	        data: searchData,
+	        async: true,
+	        error: function () {
+	            alert("Your request is not valid!");
+	        },
+	        success: function (data) {
+	            $(container).html(data);
+	        }
+	    });
+	}
+	</script>
 	</main>
 </body>
 </html>

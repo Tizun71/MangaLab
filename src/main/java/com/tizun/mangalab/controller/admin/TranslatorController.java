@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tizun.mangalab.businessLayer.interfaces.ITranslatorService;
 import com.tizun.mangalab.domainLayer.entity.Translator;
@@ -39,6 +40,9 @@ public class TranslatorController {
 		long rowCount = _translatorService.CountDataRow(searchValue);
 		long pageCount = rowCount % PAGE_SIZE == 0 ? rowCount / PAGE_SIZE : rowCount / PAGE_SIZE + 1;
 		List<Translator> translators = _translatorService.ListOfTranslators(page, PAGE_SIZE, searchValue);
+		for (Translator translator : translators) {
+			translator.setMangaQuantity(_translatorService.CountDataRowInMangaTable(translator.getTranslatorID()));
+		}
 		model.addAttribute("page", page);
 		model.addAttribute("totalPages", pageCount);
 		model.addAttribute("translators", translators);
@@ -73,8 +77,13 @@ public class TranslatorController {
 	}
 	
 	@GetMapping("/delete")
-	public String delete(@RequestParam("translatorId") int id) {
+	public String delete(@RequestParam("translatorId") int id, RedirectAttributes redirectAttributes) {
+		if (_translatorService.InUsed(id)) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Nhóm dịch đang được sử dụng!");
+			return "redirect:/dashboard/translators";
+		}
 		_translatorService.Delete(id);
+		redirectAttributes.addFlashAttribute("successMessage", "Xóa nhóm dịch thành công!");
 		return "redirect:/dashboard/translators";
 	}
 }

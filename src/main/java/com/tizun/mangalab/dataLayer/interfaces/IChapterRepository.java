@@ -11,8 +11,10 @@ public interface IChapterRepository {
 	public List<Chapter> List(long mangaID);
 
 	public Chapter Get(long id);
-
+	public Chapter Get(long id, int chapterNumber);
 	public boolean Delete(int id);
 
 	public Chapter Save(Chapter chapter);
+
+	int Count(long mangaID);
 }

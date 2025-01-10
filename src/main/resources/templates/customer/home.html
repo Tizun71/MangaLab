@@ -31,6 +31,14 @@
 
         <!-- Template Stylesheet -->
         <link th:href="@{/customer/css/style.css}" rel="stylesheet">
+        
+        <style>
+        	.category-item:hover {
+			    color: red; 
+			    background-color: rgba(255, 0, 0, 0.1); 
+			    transition: background-color 0.3s, color 0.3s; 
+			}
+        </style>
     </head>
 
     <body>
@@ -43,55 +51,9 @@
         </div>
         <!-- Spinner End -->
 
-        <!-- Topbar Start -->
-        <div class="container-fluid topbar bg-light px-5 d-none d-lg-block">
-            <div class="row gx-0 align-items-center">
-                <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
-                </div>
-                <div class="col-lg-4 text-center text-lg-end">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="#"><small class="me-3 text-dark"><i class="fa fa-user text-primary me-2"></i>Register</small></a>
-                        <a href="#"><small class="me-3 text-dark"><i class="fa fa-sign-in-alt text-primary me-2"></i>Login</small></a>
-                    
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Topbar End -->
-
         <!-- Navbar & Hero Start -->
         <div class="container-fluid position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <img th:src="@{/customer/img/logo.png}" alt="Logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Services</a>
-                        <a href="blog.html" class="nav-item nav-link">Blogs</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link" data-bs-toggle="dropdown">
-                                <span class="dropdown-toggle">Pages</span>
-                            </a>
-                            <div class="dropdown-menu m-0">
-                                <a href="feature.html" class="dropdown-item">Our Features</a>
-                                <a href="team.html" class="dropdown-item">Our team</a>
-                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                <a href="offer.html" class="dropdown-item">Our offer</a>
-                                <a href="FAQ.html" class="dropdown-item">FAQs</a>
-                                <a href="404.html" class="dropdown-item">404 Page</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-                    </div>
-                    <a href="#" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Get Started</a>
-                </div>
-            </nav>
+             <div th:insert="~{customer/fragments/header.html :: header-bar}"></div>
 
             <!-- Carousel Start -->
             <div class="header-carousel owl-carousel">
@@ -107,8 +69,7 @@
                                         <h1 class="display-4 text-uppercase text-white mb-4" th:text="${manga.MangaName}"></h1>
                                         <p class="et mb-5 fs-5"></p>
                                         <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
-                                            <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i>Đọc chương đầu</a>
-                                            <a class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem chi tiết</a>
+                                            <a class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2" th:href="@{home/manga(mangaID=${manga.MangaID})}">Xem chi tiết</a>
                                         </div>
                                     </div>
                                 </div>
@@ -148,9 +109,12 @@
                       <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
 
-                          <a href="search.html" class="nav-link category-item swiper-slide" th:each="category : ${categories}">
-                            <h3 class="category-title" th:text="${category.CategoryName}"></h3>
-                          </a>
+                          <div th:each="category : ${categories}">
+                          	<a th:href="@{/home/search?(searchValue= ${category.CategoryName})}" class="nav-link category-item swiper-slide">
+                          	<h3 class="category-title" th:text="${category.CategoryName}"></h3>
+                          	</a>
+                            
+                          </div>
                           
                         </div>
                       </div>
@@ -185,10 +149,13 @@
           
                       <div class="manga-carousel swiper">
                         <div class="swiper-wrapper">
-                            <a href="search.html" class="nav-link manga-item swiper-slide">
-                                <img class="manga-image" src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/1288/cover/processed-5921c6a53454ea2288cc076706b9d3e8.jpg">
-                                <h3 class="manga-title">Monster#8</h3>
-                            </a>
+                            <div class="col-6 col-md-2" th:each="manga : ${mangas_hot}">
+		                        <a th:href="@{home/manga(mangaID=${manga.MangaID})}" class="nav-link manga-item">
+		                            <img class="manga-image" th:src="@{${manga.getDisplayPhotoPath()}}" onerror="">
+		                            <h3 class="manga-title" th:text="${manga.MangaName}"></h3>
+		                            <p style="color: grey;" th:text="${manga.TotalView + ' lượt xem'}"></p>
+		                        </a>
+		                    </div>
                         </div>
                       </div>
           
@@ -205,7 +172,7 @@
                     <div class="col-md-12">
                       <div class="section-header d-flex flex-wrap justify-content-between mb-5">
                         <h2 class="section-title">Truyện mới cập nhật</h2>   
-
+						
                         <div class="d-flex align-items-center">
                             <a href="">
                               Xem danh sách truyện
@@ -216,10 +183,10 @@
                   </div>
                   <div class="row">
                     <div class="col-6 col-md-2"  th:each="manga : ${mangas}">
-                        <a th:href="@{manga(mangaID=${manga.MangaID})}" class="nav-link manga-item">
+                        <a th:href="@{home/manga(mangaID=${manga.MangaID})}" class="nav-link manga-item">
                             <img class="manga-image" th:src="@{${manga.getDisplayPhotoPath()}}" onerror="">
                             <h3 class="manga-title" th:text="${manga.MangaName}"></h3>
-                            <p style="color: grey;">C.1 - 10 phút trước</p>
+                            <p style="color: grey;" th:text="${manga.getTimeAgo()}"></p>
                         </a>
                     </div>
                     

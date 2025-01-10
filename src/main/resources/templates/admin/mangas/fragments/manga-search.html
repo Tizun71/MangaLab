@@ -1,0 +1,53 @@
+<div th:fragment="resultList">
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Tình trạng</th>
+				<th>Ảnh</th>
+				<th>Tiêu đề</th>
+				<th>Ngày cập nhật</th>
+				<th>Danh mục</th>
+				<th>Tags</th>
+				<th>Số lượt xem</th>
+				<th>Cập nhật</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="manga : ${mangas}">
+				<td><input type="checkbox"></td>
+				<td th:text="${manga.GetIsCompletedString()}"></td>
+				<td><img th:src="@{${manga.DisplayPhotoPath}}" alt=""
+					width="50"></td>
+				<td th:text="${manga.MangaName}"></td>
+				<td th:text="${manga.CreatedDate}"></td>
+				<td><span class="badge badge-primary"
+					th:text="${entityNameHelper.GetCategoryNameByID(manga.categoryID)}"></span></td>
+				<td th:with="stringArray=${#strings.arraySplit(manga.Tags, ',')}">
+					<span class="badge badge-primary" th:each="part : ${stringArray}"
+					th:text="${part}" style="margin: 0 2px"></span>
+				</td>
+				<td th:text="${manga.TotalView}"></td>
+				<td><a
+					th:href="@{/dashboard/mangas/showFormForEdit(mangaId=${manga.MangaID})}"
+					class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+					<a th:href="@{/dashboard/mangas/delete(mangaId=${manga.MangaID})}" class="btn btn-danger btn-sm" onclick="if (!(confirm('Bạn có muốn xóa truyện này không'))) return false">
+						<i class="fas fa-trash-alt"></i>
+					</a></td>
+			</tr>
+			<!-- More rows as needed -->
+		</tbody>
+	</table>
+
+	<nav>
+		<ul class="pagination justify-content-center">
+			<li class="page-item"
+				th:each="i : ${#numbers.sequence(1, totalPages)}"><a
+				href="javascript:void(0);" th:text="${i}"
+				th:onclick="'paginationSearch(' + '\'#formSearch\', ' + ${i} + ')'"
+				class="page-link"></a></li>
+		</ul>
+	</nav>
+</div>
+
+

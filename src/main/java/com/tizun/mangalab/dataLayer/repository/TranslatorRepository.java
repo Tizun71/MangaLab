@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tizun.mangalab.dataLayer.interfaces.ICommonRepository;
+import com.tizun.mangalab.dataLayer.interfaces.ITranslatorRepository;
 import com.tizun.mangalab.domainLayer.entity.Translator;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 @Repository
-public class TranslatorRepository implements ICommonRepository<Translator>{
+public class TranslatorRepository implements ITranslatorRepository{
 	private EntityManager _entityManager;
 	
 	@Autowired
@@ -77,7 +78,12 @@ public class TranslatorRepository implements ICommonRepository<Translator>{
 	@Override
 	public boolean InUsed(int id) {
 		// TODO Auto-generated method stub
-		return false;
+	    String theQuery = "SELECT CASE WHEN EXISTS(SELECT 1 FROM Manga WHERE TranslatorID = :id) THEN 1 ELSE 0 END";
+	    TypedQuery<Integer> qr = _entityManager.createQuery(theQuery, Integer.class);
+	    qr.setParameter("id", id);
+
+	    int result = qr.getSingleResult();
+	    return result == 1;
 	}
 
 	@Override
@@ -85,5 +91,14 @@ public class TranslatorRepository implements ICommonRepository<Translator>{
 		// TODO Auto-generated method stub
 		Translator newTranslator = _entityManager.merge(data);
 		return newTranslator;
+	}
+
+	@Override
+	public long CountNumberManga(int id) {
+		// TODO Auto-generated method stub
+		String theQuery = "select count(t) from Manga t where TranslatorID = :id";
+		TypedQuery<Long> qr = _entityManager.createQuery(theQuery, Long.class);
+		qr.setParameter("id", id);
+		return qr.getSingleResult();
 	}
 }

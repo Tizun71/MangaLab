@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,7 @@ public class Translator {
 	private String Description;
 	@Column(name="email")
 	private String Email;
+	
+	@Transient
+	private long MangaQuantity = 0;
 }

@@ -57,7 +57,7 @@ public class CategoryRepository implements ICommonRepository<Category> {
 	@Override
 	public boolean Delete(int id) {
 		Category category = _entityManager.find(Category.class, id);
-		if (category != null) {
+		if (category == null) {
 			return false;
 		}
 		_entityManager.remove(category);
@@ -67,8 +67,12 @@ public class CategoryRepository implements ICommonRepository<Category> {
 
 	@Override
 	public boolean InUsed(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	    String theQuery = "SELECT CASE WHEN EXISTS(SELECT 1 FROM Manga WHERE CategoryID = :id) THEN 1 ELSE 0 END";
+	    TypedQuery<Long> qr = _entityManager.createQuery(theQuery, Long.class);
+	    qr.setParameter("id", id);
+
+	    long result = qr.getSingleResult();
+	    return result == 1;
 	}
 
 	@Override

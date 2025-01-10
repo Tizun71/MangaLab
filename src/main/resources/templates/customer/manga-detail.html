@@ -31,6 +31,8 @@
 
         <!-- Template Stylesheet -->
         <link th:href="@{/customer/css/style.css}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js}"></script>
     </head>
 
     <body>
@@ -43,55 +45,9 @@
         </div>
         <!-- Spinner End -->
 
-        <!-- Topbar Start -->
-        <div class="container-fluid topbar bg-light px-5 d-none d-lg-block">
-            <div class="row gx-0 align-items-center">
-                <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
-                </div>
-                <div class="col-lg-4 text-center text-lg-end">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="#"><small class="me-3 text-dark"><i class="fa fa-user text-primary me-2"></i>Register</small></a>
-                        <a href="#"><small class="me-3 text-dark"><i class="fa fa-sign-in-alt text-primary me-2"></i>Login</small></a>
-                    
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Topbar End -->
-
         <!-- Navbar & Hero Start -->
         <div class="container-fluid position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <img th:src="@{/customer/img/logo.png}" alt="Logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Services</a>
-                        <a href="blog.html" class="nav-item nav-link">Blogs</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link" data-bs-toggle="dropdown">
-                                <span class="dropdown-toggle">Pages</span>
-                            </a>
-                            <div class="dropdown-menu m-0">
-                                <a href="feature.html" class="dropdown-item">Our Features</a>
-                                <a href="team.html" class="dropdown-item">Our team</a>
-                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                <a href="offer.html" class="dropdown-item">Our offer</a>
-                                <a href="FAQ.html" class="dropdown-item">FAQs</a>
-                                <a href="404.html" class="dropdown-item">404 Page</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-                    </div>
-                    <a href="#" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Get Started</a>
-                </div>
-            </nav>
+           <div th:insert="~{customer/fragments/header.html :: header-bar}"></div>
 
             <!-- Carousel Start -->
             <div class="header-carousel owl-carousel">
@@ -117,6 +73,7 @@
                   <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12 py-5">
+                        	<input type="text" th:value="${manga.MangaID}" id="mangaInput" hidden>
                             <h3 th:text="${manga.Author}">Author</h3>
                             <h1 th:text="${manga.MangaName}">Tên truyện</h1>
                             <div class="tags" th:with="stringArray=${#strings.arraySplit(manga.Tags, ',')}">
@@ -125,8 +82,13 @@
                         </div>
 
                         <div class="col-md-12">
-                            <a href="#" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Theo dõi</a>
-                            <a href="#" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Đọc chương đầu tiên</a>
+                        	<div th:if="${not isFollowed}" id="btnfollow" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">
+                            	<div id="follow-btn">Theo dõi</div>
+                            </div>
+                            <div th:if="${isFollowed}" id="btnfollow" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">
+                            	<div id="follow-btn">Đang theo dõi</div>
+                            </div>
+                            <a th:if="${firstChapterID}" th:href="@{/home/chapter(chapterID=${firstChapterID})}" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Đọc chương đầu tiên</a>
                         </div>
                     </div>
 
@@ -185,15 +147,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-3 mt-3">
-                    <p class="row">CÙNG NHÓM DỊCH
-                    <div class="row">
-                        <img class="col-2 col-md-3" src="https://storage-ct.lrclib.net/file/cuutruyen/uploads/manga/2600/cover/processed-97e338e0dcf69632425d68abcaa6d53e.jpg"></img>
-                        <div class="col col-md">
-                            <p class="row" style="font-weight: bold;">Red Blue</p>
-                            <p class="row">C.1 - 10 giờ trước</p>
-                        </div>
-                    </div>         
+                <div class="col-md-3 mt-3">       
                     
                     <p class="row">ĐỀ XUẤT
                         <div class="row">
@@ -241,6 +195,32 @@
         <script th:src="@{/customer/lib/counterup/counterup.min.js}"></script>
         <script th:src="@{/customer/lib/lightbox/js/lightbox.min.js}"></script>
         <script th:src="@{/customer/lib/owlcarousel/owl.carousel.min.js}"></script>
+        <script language="javascript" type="text/javascript" th:inline="javascript">
+	        jQuery.noConflict();
+	        jQuery(document).ready(function($) {		 
+	        	$("#btnfollow").click(function () {
+	                let followBtn = $("#follow-btn");
+	                let isFollowing = followBtn.text().trim() === "Đang theo dõi";
+	                let newStatus = isFollowing ? "Theo dõi" : "Đang theo dõi";
+	                let followStatus = isFollowing ? "0" : "1"; // 0: hủy theo dõi, 1: theo dõi
+
+	                let mangaID = document.getElementById("mangaInput").value;
+
+	                $.ajax({
+	                    url: '/home/follow',
+	                    type: 'GET',    
+	                    data: { mangaID: mangaID, follow_status: followStatus },
+	                    success: function(response) {
+	                        followBtn.text(newStatus); // Cập nhật giao diện sau khi thành công
+	                        toastr.success(response.message, response.status);
+	                    },
+	                    error: function(error) {
+	                        toastr.error('Cập nhật trạng thái theo dõi thất bại!', 'Thất bại');
+	                    }
+	                });
+	            });
+	        });
+		</script>
         
 
         <!-- Template Javascript -->

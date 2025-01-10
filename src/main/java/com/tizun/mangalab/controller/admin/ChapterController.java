@@ -51,13 +51,14 @@ public class ChapterController {
 		}
 		else {
 			chapter.setMangaID(mangaID);
+			chapter.setChapterNumber(_chapterService.GetChapterLength(mangaID) + 1);
 		}
 		
 		model.addAttribute("mangaId", mangaID);
 		model.addAttribute("chapter", chapter);
 		model.addAttribute("chapterPhotos", chapterPhotos);
 		System.out.println(chapterPhotos.size());
-		return "admin/chapters/chapter-edit-form.html";
+		return "admin/chapters/chapter-edit-form";
 	}
 	
 	@GetMapping("/save")
@@ -72,29 +73,32 @@ public class ChapterController {
 	
 	@PostMapping("/savePhotos")
 	public String savePhotos( 	@ModelAttribute("chapter") Chapter chapter,
-								@RequestParam("pagePhotos") List<MultipartFile> pagePhotos,
+								@RequestParam(value = "pagePhotos", required = false) List<MultipartFile> pagePhotos,
 								Model model
 							) throws IOException{
 		if (chapter.getChapterID() == 0) {
 			chapter = _chapterService.Save(chapter);
 		}
-		
-		for (MultipartFile pagePhoto : pagePhotos) {
-			ChapterPhoto chapterPhoto = new ChapterPhoto();
-			if (pagePhoto != null && !pagePhoto.isEmpty()) {
-				String pageFileName = _uploadHelper.GenerateFileName(pagePhoto);
-				chapterPhoto.setChapterID(chapter.getChapterID());
-				chapterPhoto.setPhotoURL(pageFileName);
-			}
-			
-			ChapterPhoto savedChapterPhoto = _chapterPhotoService.Save(chapterPhoto);
-			///uploads/mangas_img/mangaID/ChapterID
-			String uploadDir = UPLOAD_DIRECTORY + chapter.getMangaID() + '/' + savedChapterPhoto.getChapterID();
-			
-			if (pagePhoto != null && !pagePhoto.isEmpty()) {
-				_uploadHelper.uploadImage(pagePhoto, chapterPhoto.getPhotoURL(), uploadDir);
+		if (!pagePhotos.get(0).isEmpty()) {
+			for (int i = pagePhotos.size() - 1; i >= 0; i--) {
+			    MultipartFile pagePhoto = pagePhotos.get(i);
+			    ChapterPhoto chapterPhoto = new ChapterPhoto();
+			    
+			    if (pagePhoto != null && !pagePhoto.isEmpty()) {
+			        String pageFileName = _uploadHelper.GenerateFileName(pagePhoto);
+			        chapterPhoto.setChapterID(chapter.getChapterID());
+			        chapterPhoto.setPhotoURL(pageFileName);
+			    }
+
+			    ChapterPhoto savedChapterPhoto = _chapterPhotoService.Save(chapterPhoto);
+			    String uploadDir = UPLOAD_DIRECTORY + chapter.getMangaID() + '/' + savedChapterPhoto.getChapterID();
+
+			    if (pagePhoto != null && !pagePhoto.isEmpty()) {
+			        _uploadHelper.uploadImage(pagePhoto, chapterPhoto.getPhotoURL(), uploadDir);
+			    }
 			}
 		}
-		return "redirect:/dashboard/chapters?mangaId=" + chapter.getMangaID() + "&chapterId=" + chapter.getChapterID();
+		
+		return "redirect:/dashboard/mangas/showFormForEdit?mangaId=" + chapter.getMangaID();
 	}
 }

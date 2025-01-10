@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+</head>
+<div th:fragment="header-bar">
+	<nav
+		class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0 sticky-top shadow-sm">
+		<a href="/home" class="navbar-brand p-0"> <img
+			th:src="@{/customer/img/logo.png}" alt="Logo">
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+			data-bs-target="#navbarCollapse">
+			<span class="fa fa-bars"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<div class="navbar-nav ms-auto py-0">
+				<div th:if="${isLoggedIn && session.user.Role == 'ADMIN'}">
+					<a href="/dashboard" class="nav-item nav-link">Đến trang Admin</a> 
+				</div>
+				<a href="/home" class="nav-item nav-link">Trang chủ</a> 
+				<a href="/home/search" class="nav-item nav-link">Tìm kiếm</a> 
+				<a href="https://github.com/Tizun71" class="nav-item nav-link">Liên hệ</a>
+				<div class="nav-item dropdown">
+					<a href="#" class="nav-link" data-bs-toggle="dropdown"> 
+						<div th:if="${not isLoggedIn}">
+							<span class="dropdown-toggle">Người dùng</span>
+						</div>
+						<div  th:if="${isLoggedIn}">
+							Xin chào: <span class="dropdown-toggle" th:text="${session.user.Username}"></span>
+						</div>
+					</a>
+					<div class="dropdown-menu m-0">
+						<div th:if="${not isLoggedIn}">
+							<a href="/auth/login" class="dropdown-item">Đăng nhập</a> 
+							<a href="/auth/register" class="dropdown-item">Đăng ký</a>
+						</div>
+						<div th:if="${isLoggedIn}">
+							<a href="/home/followList" class="dropdown-item">Danh sách theo dõi</a> 
+							<a href="/auth/login" class="dropdown-item">Đổi mật khẩu</a> 
+							
+							<a th:href="@{/auth/logout}" class="dropdown-item">Đăng xuất</a> 
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>

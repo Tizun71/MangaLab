@@ -53,4 +53,30 @@ public class ChapterService implements IChapterService{
 		// TODO Auto-generated method stub
 		return chapterRepository.Get(chapterId);
 	}
+
+	@Override
+	public Chapter GetPrevChapter(long mangaID, int chapterNumber) {
+		// TODO Auto-generated method stub
+		if (chapterNumber - 1 <= 0)
+			return new Chapter();
+		return chapterRepository.Get(mangaID, chapterNumber - 1);
+	}
+	
+	@Override
+	public Chapter GetNextChapter(long mangaID, int chapterNumber) {
+		// TODO Auto-generated method stub
+		if (chapterNumber + 1 > GetChapterLength(mangaID))
+			return new Chapter();
+		return chapterRepository.Get(mangaID, chapterNumber + 1);
+	}
+	
+	@Override
+	public int GetChapterLength(long mangaID) {
+		// TODO Auto-generated method stub
+		List<Chapter> chapters = chapterRepository.List(mangaID);
+		if (chapters == null) {
+			return 0;
+		}
+		return chapters.size();
+	}
 }

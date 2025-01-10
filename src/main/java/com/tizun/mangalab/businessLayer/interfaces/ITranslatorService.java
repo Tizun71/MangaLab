@@ -11,7 +11,9 @@ import com.tizun.mangalab.domainLayer.entity.Translator;
 public interface ITranslatorService {
 	List<Translator> ListOfTranslators(int page, int pageSize, String searchValue);
 	long CountDataRow(String searchValue);
+	long CountDataRowInMangaTable(int id);
 	Optional<Translator> GetTranslatorByID(int id);
 	boolean Delete(int id);
+	boolean InUsed(int id);
 	Translator Save(Translator translator);
 }

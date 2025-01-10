@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ComboBoxItem {
-	private int ItemID;
+	private long ItemID;
 	private String ItemName;
 }
