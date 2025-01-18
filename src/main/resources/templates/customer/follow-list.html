@@ -68,10 +68,10 @@
                   </div>
                   <div class="row">
                     <div class="col-6 col-md-2"  th:each="manga : ${mangas}">
-                        <a th:href="@{home/manga(mangaID=${manga.MangaID})}" class="nav-link manga-item">
+                        <a th:href="@{/home/manga(mangaID=${manga.MangaID})}" class="nav-link manga-item">
                             <img class="manga-image" th:src="@{${manga.getDisplayPhotoPath()}}" onerror="">
                             <h3 class="manga-title" th:text="${manga.MangaName}"></h3>
-                            <p style="color: grey;">C.1 - 10 phút trước</p>
+                            <p style="color: grey;" th:text="${manga.getTimeAgo()}">C.1 - 10 phút trước</p>
                         </a>
                     </div>
                     

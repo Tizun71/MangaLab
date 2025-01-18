@@ -84,11 +84,11 @@ public class MangaController {
 	@GetMapping("/delete")
 	public String delete(@RequestParam("mangaId") int id, RedirectAttributes redirectAttributes) {
 		if (_mangaService.InUsed(id)) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Nhóm dịch đang được sử dụng!");
+			redirectAttributes.addFlashAttribute("errorMessage", "Truyện đang được sử dụng!");
 			return "redirect:/dashboard/mangas";
 		}
 		_mangaService.Delete(id);
-		redirectAttributes.addFlashAttribute("successMessage", "Xóa nhóm dịch thành công!");
+		redirectAttributes.addFlashAttribute("successMessage", "Xóa truyện nhóm dịch thành công!");
 		return "redirect:/dashboard/mangas";
 	}
 	

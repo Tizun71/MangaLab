@@ -71,12 +71,13 @@
 			    								<input type="text" th:field="*{Tags}" class="form-control" placeholder="Ví dụ: Hành động,Phiêu lưu,Kì bí">
 								  			</div>
 								   		</div>
+								   		<input type="text" th:field="*{TotalView}" class="form-control" placeholder="Ví dụ: Hành động,Phiêu lưu,Kì bí" hidden>
 								   </div>
 									<div class="row">
 										<div class="col-md-9"></div>
 										<div class="col-md-3">
 											<button class="btn btn-primary m-1">Xác nhận</button>
-											<a href="" class="btn btn-danger m-1">Hủy</a>
+											<a th:href="@{/dashboard/mangas}" class="btn btn-danger m-1">Hủy</a>
 										</div>
 									</div>
 								</div>
@@ -98,7 +99,7 @@
 											<td th:text="${chapter.ChapterName}"></td>
 											<td style="width: 35%">	                    	
 									        	<a th:href="@{/dashboard/chapters(mangaId=${manga.MangaID}, chapterId=${chapter.ChapterID})}" class="btn btn-info btn-sm" style="margin:1px"><i class="fas fa-edit"></i></a>
-			                    				<button class="btn btn-danger btn-sm" style="margin:1px"><i class="fas fa-trash-alt"></i></button>
+			                    				<a th:href="@{/dashboard/chapters/delete(chapterId=${chapter.ChapterID}, mangaId=${chapter.MangaID})}" class="btn btn-danger btn-sm" style="margin:1px"><i class="fas fa-trash-alt"></i></a>
 			                    				<div class="fa fa-grip-lines" style="margin-left:5px;display: none"></div>
 			                    			</td>
 										</tr>			

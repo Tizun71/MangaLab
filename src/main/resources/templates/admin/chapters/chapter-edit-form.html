@@ -12,14 +12,14 @@
 					<div class="card-body">
 						<form th:action="@{/dashboard/chapters/savePhotos}" method="post" enctype="multipart/form-data" th:object="${chapter}">
 						<div class="form-group">
-							<input type="text" name="mangaId" th:field="*{MangaID}">
-							<input type="text" name="chapterId" th:field="*{ChapterID}">
-							<input type="text" name="chapterId" th:field="*{ChapterNumber}">
+							<input type="text" name="mangaId" th:field="*{MangaID}" hidden="">
+							<input type="text" name="chapterId" th:field="*{ChapterID}" hidden="">
+							<input type="text" name="chapterId" th:field="*{ChapterNumber}" hidden="">
 							<label class="control-label">Tên chương:</label>
 			    			<input type="text" class="form-control" placeholder="Nhập tên chương" th:field="*{ChapterName}" required="required">
 						</div>
 							<input type="submit" class="btn btn-primary" value="Lưu">
-							<a href="" class="btn btn-primary">Quay lại</a>
+							<a th:href="@{/dashboard/mangas/showFormForEdit(mangaId=*{MangaID})}" class="btn btn-primary">Quay lại</a>
 							<input id="createPage" name="pagePhotos" class="btn btn-primary" type="file" accept="image/*" onchange="handleCreatePage(this)" multiple="multiple" hidden>
 						</form>
 						
@@ -35,10 +35,10 @@
 										</label>
 									</div>
 									
-									<div class="col-2" th:each="chapterPhoto : ${chapterPhotos}">
+									<div class="col-2" th:each="chapterPhoto, index : ${chapterPhotos}">
 										<div class="d-flex flex-column align-items-center">
 										    <img th:src="${chapterPhoto.getPhotoURL(chapter.MangaID,chapter.ChapterID)}" width="148" height="210" onerror="this.src='https://placehold.co/148x210?text=Image+Not+Found';" >
-										    <span style="font-weight: bold" th:text="${chapterPhoto.PhotoNumber}"></span>
+										    <span style="font-weight: bold" th:text="${index.count}"></span>
 										</div>
 									</div>			
 

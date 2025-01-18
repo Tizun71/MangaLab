@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tizun.mangalab.businessLayer.interfaces.IChapterPhotoService;
 import com.tizun.mangalab.businessLayer.interfaces.IChapterService;
+import com.tizun.mangalab.businessLayer.services.ChapterService;
 import com.tizun.mangalab.domainLayer.entity.Chapter;
 import com.tizun.mangalab.domainLayer.entity.ChapterPhoto;
 import com.tizun.mangalab.utils.EntityNameHelper;
@@ -59,6 +61,13 @@ public class ChapterController {
 		model.addAttribute("chapterPhotos", chapterPhotos);
 		System.out.println(chapterPhotos.size());
 		return "admin/chapters/chapter-edit-form";
+	}
+	
+	@GetMapping("/delete")
+	public String delete(@RequestParam("chapterId") int id, @RequestParam("mangaId") int mid, RedirectAttributes redirectAttributes) {
+		_chapterService.Delete(id);
+		redirectAttributes.addFlashAttribute("successMessage", "Xóa chương thành công!");
+		return "redirect:/dashboard/mangas/showFormForEdit?mangaId=" + mid;
 	}
 	
 	@GetMapping("/save")

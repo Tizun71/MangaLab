@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.tizun.mangalab.dataLayer.interfaces.IChapterRepository;
 import com.tizun.mangalab.domainLayer.entity.Chapter;
 import com.tizun.mangalab.domainLayer.entity.Manga;
+import com.tizun.mangalab.domainLayer.entity.Translator;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -49,9 +50,19 @@ public class ChapterRepository implements IChapterRepository{
 	}
 
 	@Override
-	public boolean Delete(int id) {
+	public boolean Delete(long id) {
 		// TODO Auto-generated method stub
-		return false;
+		Chapter chapter = _entityManager.find(Chapter.class, id);
+	    if (chapter == null) {
+	        return false;
+	    }
+
+	    _entityManager.createQuery("DELETE FROM ChapterPhoto s WHERE ChapterID= :chapterId")
+	                  .setParameter("chapterId", id)
+	                  .executeUpdate();
+
+	    _entityManager.remove(chapter);
+	    return true;
 	}
 
 	@Override

@@ -93,7 +93,7 @@
 	<script th:inline="javascript">
 	function openModalCreate(container){
 		$.ajax({
-			url: '/dashboard/translators/showModalForCreate',
+			url: '/dashboard/categories/showModalForCreate',
 			type: 'GET',
 		    async: true,
 		    error: function () {
@@ -106,9 +106,9 @@
 	}
 	function openModalUpdate(container, id){
 		$.ajax({
-			url: '/dashboard/translators/showModalForUpdate',
+			url: '/dashboard/categories/showModalForUpdate',
 			type: 'GET',
-			data: { translatorId: id },
+			data: { categoryId: id },
 		    async: true,
 		    error: function () {
 		        alert("Your request is not valid!");

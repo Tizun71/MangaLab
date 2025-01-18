@@ -10,6 +10,7 @@ public interface IChapterService {
 	String GetChapterNameByID(int id);
 	Chapter Get(long chapterId);
 	Chapter Save(Chapter chapter);
+	boolean Delete(long chapterId);
 	int GetChapterLength(long mangaID);
 	Chapter GetPrevChapter(long mangaID, int chapterNumber);
 	Chapter GetNextChapter(long mangaID, int chapterNumber);

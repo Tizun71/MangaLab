@@ -82,10 +82,10 @@
                         </div>
 
                         <div class="col-md-12">
-                        	<div th:if="${not isFollowed}" id="btnfollow" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">
+                        	<div th:if="${isLoggedIn && not isFollowed}" id="btnfollow" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">
                             	<div id="follow-btn">Theo dõi</div>
                             </div>
-                            <div th:if="${isFollowed}" id="btnfollow" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">
+                            <div th:if="${isLoggedIn && isFollowed}" id="btnfollow" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">
                             	<div id="follow-btn">Đang theo dõi</div>
                             </div>
                             <a th:if="${firstChapterID}" th:href="@{/home/chapter(chapterID=${firstChapterID})}" class="btn btn-outline-primary btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Đọc chương đầu tiên</a>

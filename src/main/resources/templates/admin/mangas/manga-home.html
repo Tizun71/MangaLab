@@ -20,6 +20,12 @@
 	    
 	  	<div class="content">
 		  	<div class="container-fluid mt-4">
+		  	<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+					<span th:text="${errorMessage}"></span>
+				</div>
+				<div th:if="${successMessage}" class="alert alert-success" role="alert">
+					<span th:text="${successMessage}"></span>
+				</div>
 	        <div class="d-flex justify-content-between">
 	            <a href="">Quay lại</a>
 	            <a th:href="@{/dashboard/mangas/showFormForCreate}" class="btn btn-primary">Thêm Truyện</a>

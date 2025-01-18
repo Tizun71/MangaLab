@@ -10,6 +10,8 @@ import com.tizun.mangalab.businessLayer.interfaces.ICategoryService;
 import com.tizun.mangalab.dataLayer.interfaces.ICommonRepository;
 import com.tizun.mangalab.domainLayer.entity.Category;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CategoryService implements ICategoryService{
 
@@ -47,9 +49,10 @@ public class CategoryService implements ICategoryService{
 		return false;
 	}
 
+	@Transactional
 	@Override
 	public Category Save(Category category) {
 		// TODO Auto-generated method stub
-		return null;
+		return categoryRepository.Save(category);
 	}
 }

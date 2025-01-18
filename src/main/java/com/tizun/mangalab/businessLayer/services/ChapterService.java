@@ -79,4 +79,11 @@ public class ChapterService implements IChapterService{
 		}
 		return chapters.size();
 	}
+
+	@Transactional
+	@Override
+	public boolean Delete(long chapterId) {
+		// TODO Auto-generated method stub
+		return chapterRepository.Delete(chapterId);
+	}
 }

@@ -12,7 +12,7 @@ public interface IChapterRepository {
 
 	public Chapter Get(long id);
 	public Chapter Get(long id, int chapterNumber);
-	public boolean Delete(int id);
+	public boolean Delete(long id);
 
 	public Chapter Save(Chapter chapter);
 
